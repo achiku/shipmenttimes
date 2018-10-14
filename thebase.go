@@ -92,6 +92,7 @@ func (od *BaseOrder) ClickpostFormat() []string {
 		od.Prefecture,
 		od.Address1,
 		od.Address2,
+		"",
 		"CD",
 	}
 }
@@ -125,7 +126,6 @@ func WriteSummaryFormat(w io.Writer, odrs []BaseOrder, osType string) error {
 	} else {
 		writer = csv.NewWriter(w)
 	}
-	writer.Comma = '\t'
 	if err := writer.Write(summaryHeader); err != nil {
 		return err
 	}
@@ -148,7 +148,6 @@ func WriteClickpostFormat(w io.Writer, odrs []BaseOrder, osType string) error {
 	} else {
 		writer = csv.NewWriter(w)
 	}
-	writer.Comma = '\t'
 	if err := writer.Write(clickpostHeader); err != nil {
 		return err
 	}
