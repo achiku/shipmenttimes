@@ -124,6 +124,10 @@ func WriteSummaryFormat(w io.Writer, odrs []BaseOrder, osType string) error {
 			transform.NewWriter(w, japanese.ShiftJIS.NewEncoder()))
 		writer.UseCRLF = true
 	} else {
+		// macのexcelでcsv開くときはutf8の場合bomが無いとうまく開けない
+		if _, err := w.Write([]byte{0xEF, 0xBB, 0xBF}); err != nil {
+			return errors.Wrap(err, "failed to add BOM")
+		}
 		writer = csv.NewWriter(w)
 	}
 	if err := writer.Write(summaryHeader); err != nil {
@@ -146,6 +150,10 @@ func WriteClickpostFormat(w io.Writer, odrs []BaseOrder, osType string) error {
 			transform.NewWriter(w, japanese.ShiftJIS.NewEncoder()))
 		writer.UseCRLF = true
 	} else {
+		// macのexcelでcsv開くときはutf8の場合bomが無いとうまく開けない
+		if _, err := w.Write([]byte{0xEF, 0xBB, 0xBF}); err != nil {
+			return errors.Wrap(err, "failed to add BOM")
+		}
 		writer = csv.NewWriter(w)
 	}
 	if err := writer.Write(clickpostHeader); err != nil {
