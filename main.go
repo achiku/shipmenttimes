@@ -60,7 +60,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer of.Close()
-	if err := WriteSummaryFormat(of, other, osType); err != nil {
+	if err := WriteClickpostFormat(of, other, osType); err != nil {
 		sendError(w, err, http.StatusInternalServerError)
 		return
 	}
