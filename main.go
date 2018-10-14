@@ -41,7 +41,7 @@ func upload(w http.ResponseWriter, r *http.Request) {
 		sendError(w, err, http.StatusInternalServerError)
 		return
 	}
-	clickpost, other := QuantityFilter(odrs, 4)
+	clickpost, other := QuantityFilter(odrs, 2)
 
 	cf, err := os.OpenFile(filepath.Join(basepath, "clickpost.csv"), os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
