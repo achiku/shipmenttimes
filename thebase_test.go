@@ -52,7 +52,7 @@ func TestWriteSummaryFormat(t *testing.T) {
 		t.Fatal(err)
 	}
 	var buf bytes.Buffer
-	if err := WriteSummaryFormat(&buf, ods); err != nil {
+	if err := WriteSummaryFormat(&buf, ods, "mac"); err != nil {
 		t.Fatal(err)
 	}
 	t.Logf("%s", buf.String())
@@ -72,7 +72,7 @@ func TestWriteClickpostFormat(t *testing.T) {
 		t.Fatal(err)
 	}
 	var buf bytes.Buffer
-	if err := WriteClickpostFormat(&buf, ods); err != nil {
+	if err := WriteClickpostFormat(&buf, ods, "mac"); err != nil {
 		t.Fatal(err)
 	}
 	t.Logf("%s", buf.String())

@@ -16,6 +16,7 @@ func sendError(w http.ResponseWriter, e error, code int) {
 }
 
 func upload(w http.ResponseWriter, r *http.Request) {
+	osType := r.FormValue("os")
 	file, _, err := r.FormFile("uploadfile")
 	if err != nil {
 		sendError(w, err, http.StatusInternalServerError)
@@ -42,32 +43,35 @@ func upload(w http.ResponseWriter, r *http.Request) {
 	}
 	clickpost, other := QuantityFilter(odrs, 4)
 
-	cf, err := os.Create(filepath.Join(basepath, "clickpost.csv"))
+	cf, err := os.OpenFile(filepath.Join(basepath, "clickpost.csv"), os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
 		sendError(w, err, http.StatusInternalServerError)
 		return
 	}
-	if err := WriteClickpostFormat(cf, clickpost); err != nil {
+	defer cf.Close()
+	if err := WriteClickpostFormat(cf, clickpost, osType); err != nil {
 		sendError(w, err, http.StatusInternalServerError)
 		return
 	}
 
-	of, err := os.Create(filepath.Join(basepath, "other.csv"))
+	of, err := os.OpenFile(filepath.Join(basepath, "other.csv"), os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
 		sendError(w, err, http.StatusInternalServerError)
 		return
 	}
-	if err := WriteSummaryFormat(of, other); err != nil {
+	defer of.Close()
+	if err := WriteSummaryFormat(of, other, osType); err != nil {
 		sendError(w, err, http.StatusInternalServerError)
 		return
 	}
 
-	sf, err := os.Create(filepath.Join(basepath, "summary.csv"))
+	sf, err := os.OpenFile(filepath.Join(basepath, "summary.csv"), os.O_WRONLY|os.O_CREATE, 0666)
 	if err != nil {
 		sendError(w, err, http.StatusInternalServerError)
 		return
 	}
-	if err := WriteSummaryFormat(sf, odrs); err != nil {
+	defer sf.Close()
+	if err := WriteSummaryFormat(sf, odrs, osType); err != nil {
 		sendError(w, err, http.StatusInternalServerError)
 		return
 	}
@@ -85,6 +89,10 @@ func index(w http.ResponseWriter, r *http.Request) {
     <div>
       <form enctype="multipart/form-data" action="http://127.0.0.1:8080/upload" method="post">
         <input type="file" name="uploadfile" />
+		<p>
+          <input type="radio" name="os" value="win" checked="checked">win
+          <input type="radio" name="os" value="mac">mac
+		</p>
         <input type="submit" value="upload" />
       </form>
     </div>

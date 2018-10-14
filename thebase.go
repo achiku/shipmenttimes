@@ -116,8 +116,15 @@ func (od BaseOrder) SummaryFormat() []string {
 }
 
 // WriteSummaryFormat  write summary
-func WriteSummaryFormat(w io.Writer, odrs []BaseOrder) error {
-	writer := csv.NewWriter(w)
+func WriteSummaryFormat(w io.Writer, odrs []BaseOrder, osType string) error {
+	var writer *csv.Writer
+	if osType == "win" {
+		writer = csv.NewWriter(
+			transform.NewWriter(w, japanese.ShiftJIS.NewEncoder()))
+		writer.UseCRLF = true
+	} else {
+		writer = csv.NewWriter(w)
+	}
 	writer.Comma = '\t'
 	if err := writer.Write(summaryHeader); err != nil {
 		return err
@@ -132,8 +139,15 @@ func WriteSummaryFormat(w io.Writer, odrs []BaseOrder) error {
 }
 
 // WriteClickpostFormat  write summary
-func WriteClickpostFormat(w io.Writer, odrs []BaseOrder) error {
-	writer := csv.NewWriter(w)
+func WriteClickpostFormat(w io.Writer, odrs []BaseOrder, osType string) error {
+	var writer *csv.Writer
+	if osType == "win" {
+		writer = csv.NewWriter(
+			transform.NewWriter(w, japanese.ShiftJIS.NewEncoder()))
+		writer.UseCRLF = true
+	} else {
+		writer = csv.NewWriter(w)
+	}
 	writer.Comma = '\t'
 	if err := writer.Write(clickpostHeader); err != nil {
 		return err
