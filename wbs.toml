@@ -1,0 +1,12 @@
+root_path = "."
+
+watch_target_dirs = ["."]
+watch_exclude_dirs = [".git", "vendor", "bin", "tmp"]
+watch_file_ext = [".go"]
+
+build_target_dir = "./tmp"
+build_target_name = "shipmenttimes"
+build_command = "go"
+build_options = ["build", "-v"]
+
+restart_process = true
