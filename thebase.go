@@ -43,8 +43,8 @@ var (
 type BaseOrderRaw struct {
 	OrderID           string // 1. 注文ID
 	OrderTime         string // 2. 注文日時
-	FirstName         string // 3. 氏(配送先)
-	LastName          string // 4. 名(配送先)
+	LastName          string // 3. 氏(配送先)
+	FirstName         string // 4. 名(配送先)
 	DeliveryCompanyID string // 5. 配送業者ID
 	OrderNumber       string // 6. 伝票番号
 	MessageTemplateID string // 7. メッセージテンプレートID
@@ -252,8 +252,8 @@ func ParseBaseCSV(in io.Reader) ([]BaseOrderRaw, error) {
 		l := BaseOrderRaw{
 			OrderID:           rec[0],
 			OrderTime:         rec[1],
-			FirstName:         rec[2],
-			LastName:          rec[3],
+			LastName:          rec[2],
+			FirstName:         rec[3],
 			DeliveryCompanyID: rec[4],
 			OrderNumber:       rec[5],
 			MessageTemplateID: rec[6],
